@@ -40,8 +40,8 @@ use pallet_transaction_payment::CurrencyAdapter;
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 
-/// Import the template pallet.
-pub use pallet_template;
+/// Import the movies pallet.
+pub use pallet_movies;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -90,8 +90,8 @@ pub mod opaque {
 //   https://docs.substrate.io/v3/runtime/upgrades#runtime-versioning
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("node-template"),
-	impl_name: create_runtime_str!("node-template"),
+	spec_name: create_runtime_str!("node-movies"),
+	impl_name: create_runtime_str!("node-movies"),
 	authoring_version: 1,
 	// The version of the runtime specification. A full node will not attempt to use its native
 	//   runtime in substitute for the on-chain Wasm runtime unless all of `spec_name`,
@@ -274,9 +274,17 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
-/// Configure the pallet-template in pallets/template.
-impl pallet_template::Config for Runtime {
+parameter_types! {
+  // One can rent at most 9,999 Movies
+  pub const MaxMoviesRented: u32 = 9999;
+}
+
+/// Configure the pallet-movies in pallets/movies.
+impl pallet_movies::Config for Runtime {
 	type Event = Event;
+	type Currency = Balances;
+	type MovieRatedRandomness = RandomnessCollectiveFlip;
+	type MaxMoviesRented = MaxMoviesRented;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -294,8 +302,8 @@ construct_runtime!(
 		Balances: pallet_balances,
 		TransactionPayment: pallet_transaction_payment,
 		Sudo: pallet_sudo,
-		// Include the custom logic from the pallet-template in the runtime.
-		TemplateModule: pallet_template,
+		// Include the custom logic from the pallet-movies in the runtime.
+		MoviesModule: pallet_movies,
 	}
 );
 
@@ -474,7 +482,7 @@ impl_runtime_apis! {
 			list_benchmark!(list, extra, frame_system, SystemBench::<Runtime>);
 			list_benchmark!(list, extra, pallet_balances, Balances);
 			list_benchmark!(list, extra, pallet_timestamp, Timestamp);
-			list_benchmark!(list, extra, pallet_template, TemplateModule);
+			list_benchmark!(list, extra, pallet_movies, TemplateModule);
 
 			let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -512,7 +520,7 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, frame_system, SystemBench::<Runtime>);
 			add_benchmark!(params, batches, pallet_balances, Balances);
 			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
-			add_benchmark!(params, batches, pallet_template, TemplateModule);
+			add_benchmark!(params, batches, pallet_movies, TemplateModule);
 
 			Ok(batches)
 		}
