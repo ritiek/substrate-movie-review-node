@@ -3535,6 +3535,7 @@ dependencies = [
  "hex-literal",
  "pallet-aura",
  "pallet-balances",
+ "pallet-curves",
  "pallet-grandpa",
  "pallet-movies",
  "pallet-randomness-collective-flip",
@@ -3761,6 +3762,23 @@ dependencies = [
  "scale-info",
  "sp-runtime",
  "sp-std",
+]
+
+[[package]]
+name = "pallet-curves"
+version = "4.0.0-dev"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "parity-scale-codec",
+ "rust_decimal",
+ "scale-info",
+ "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
 ]
 
 [[package]]
@@ -4761,6 +4779,16 @@ checksum = "ffc936cf8a7ea60c58f030fd36a612a48f440610214dc54bc36431f9ea0c3efb"
 dependencies = [
  "libc",
  "winapi 0.3.9",
+]
+
+[[package]]
+name = "rust_decimal"
+version = "1.17.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "353775f96a1f400edcca737f843cb201af3645912e741e64456a257c770173e8"
+dependencies = [
+ "arrayvec 0.5.2",
+ "num-traits",
 ]
 
 [[package]]

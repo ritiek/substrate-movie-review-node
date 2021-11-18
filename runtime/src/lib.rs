@@ -287,6 +287,14 @@ impl pallet_movies::Config for Runtime {
 	type MaxMoviesRented = MaxMoviesRented;
 }
 
+impl pallet_curves::Config for Runtime {
+	type Event = Event;
+	type Currency = Balances;
+    type GetNativeCurrencyId: Get<u64>;
+    type CurveDeposit: Get<BalanceOf<Self>>;
+    type PalletId: Get<PalletId>;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -304,6 +312,7 @@ construct_runtime!(
 		Sudo: pallet_sudo,
 		// Include the custom logic from the pallet-movies in the runtime.
 		MoviesModule: pallet_movies,
+		CurvesModule: pallet_curves,
 	}
 );
 
